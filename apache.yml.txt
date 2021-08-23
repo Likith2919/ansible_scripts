@@ -1,0 +1,24 @@
+---
+- hosts: web
+  become: True
+  tasks:
+    - name: Install apache server
+      yum:
+        name: httpd
+        state: present
+    - name: Enable apache on reboot
+      service:
+        name: httpd
+        enabled: True
+    - name: Install git
+      yum:
+        name: git
+        state: present
+    - name: Deploy websie from git
+      git:
+        repo: https://github.com/javahometech/javahome-app
+        dest: /var/www/html/
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
